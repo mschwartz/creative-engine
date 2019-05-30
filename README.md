@@ -76,7 +76,7 @@ This project is part of [Modus Labs](https://labs.moduscreate.com/?utm_source=la
 
 # License
 
-Creative Engine is licensed under [LGPL 2.1](./LICENSE) and contains a heavily modified version of [LibXMP](https://sourceforge.net/p/xmp/libxmp/ci/master/tree/README).
+Creative Engine is licensed under [MIT](./LICENSE) and contains a heavily modified version of [LibXMP](https://sourceforge.net/p/xmp/libxmp/ci/master/tree/README).
 
 # Contributing
 
