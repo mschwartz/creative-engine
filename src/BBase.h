@@ -67,11 +67,15 @@ inline void operator delete[](void *ptr) {
   FreeMem(ptr);
 }
 #else
-
-// Cannot inline on the host (defined in BBase.cpp)
+#if __cplusplus > 199711L
+// C++11 deprecates throw
+extern void *operator new(size_t size);
+extern void *operator new[](size_t size);
+#else
+// < C++11: throw not deprecated
 extern void *operator new(size_t size) throw(std::bad_alloc);
-
 extern void *operator new[](size_t size) throw(std::bad_alloc);
+#endif
 
 #ifdef __linux__
 extern void operator delete(void *ptr) _GLIBCXX_USE_NOEXCEPT;
