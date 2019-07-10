@@ -1,24 +1,68 @@
 #include "CreativeEngine.h"
 
-BMapPlayfield::BMapPlayfield(TUint16 aTilesetSlot, TUint16 aMapSlot, TUint16 aCodesSlot) : BPlayfield() {
+class BMapTileset : public BBitmap {
+public:
+  TUint8 *TilePtr(TUint32 aTileNumber) {
+    const TInt tw = Width() / 16,
+      row = aTileNumber / tw,
+      col = aTileNumber % tw;
+
+    const TInt offset = row * 16 * Width() + col*16;
+    return &mPixels[offset];
+  };
+};
+
+struct MAP {
+  TUint8 token[4];
+  TUint16 width;
+  TUint16 height;
+  TUint32 map[];
+};
+
+BMapPlayfield::BMapPlayfield(BViewPort *aViewPort, TUint16 aTilesetSlot, TUint16 aMapSlot, TUint16 aCodesSlot) : BPlayfield() {
+  mViewPort = aViewPort;
   mTilesetSlot = aTilesetSlot;
   mMapSlot = aMapSlot;
   mCodesSlot = aCodesSlot;
+  mTileset = (BMapTileset *)gResourceManager.GetBitmap(mTilesetSlot);
+  gDisplay.SetPalette(mTileset);
 
   BRaw *rawMap = gResourceManager.GetRaw(aMapSlot);
-  TUint16 *pw = (TUint16 *)&rawMap->mData[0];
-  mMapWidth = pw[2];
-  mMapWidth = pw[3];
-  mMapData = &pw[4];
+  auto *pw = (MAP *) &rawMap->mData[0];
+  mMapWidth = pw->width;
+  mMapHeight = pw->height;
+  mMapData = &pw->map[0];
 
   BRaw *rawAttributes = gResourceManager.GetRaw(aCodesSlot);
-  mAttributes = (TUint16 *)&rawAttributes->mData[0];
+  mAttributes = (TUint16 *) &rawAttributes->mData[0];
 }
 
 BMapPlayfield::~BMapPlayfield() {
   //
 }
 
-void BMapPlayfield::Render(TFloat aWorldX, TFloat aWorldY) {
+void BMapPlayfield::Render() {
+  TRect& rect = mViewPort->mRect;
+  TInt offRow = TInt(mViewPort->mWorldY / TileSize()),
+    offCol = TInt(mViewPort->mWorldX / TileSize()),
+    tilesHigh = rect.Height() / TileSize(),
+    tilesWide = rect.Width() / TileSize();
 
+
+  for (TInt row=0; row<tilesHigh; row++) {
+    const TInt offset = (row +offRow) * mMapWidth + offCol;
+    TUint32 *map = &mMapData[offset];
+    for (TInt col=0; col<tilesWide; col++) {
+      const TUint8 *tile = mTileset->TilePtr(TUint32(map[col] & 0xffff));
+      const TInt offset = (rect.y1 + row*16) * SCREEN_WIDTH + rect.x1 + col*16;
+      TUint8 *bm = &gDisplay.renderBitmap->mPixels[offset];
+      for (TInt y=0; y<16; y++) {
+        for (TInt x=0; x<16; x++) {
+          bm[x] = tile[x];
+        }
+        bm += SCREEN_WIDTH;
+        tile += mTileset->Width();
+      }
+    }
+  }
 }

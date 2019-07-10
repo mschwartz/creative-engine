@@ -1,20 +1,21 @@
 #ifndef BMAPPLAYFIELD_H
 #define BMAPPLAYFIELD_H
 
-#include <BPlayfield.h>
-#include <Display/DisplayDefines.h>
+#include <CreativeEngine.h>
+
+class BMapTileset;
 
 // Playfield is a map of width,height 16x16 tiles
 // TODO: 32x32 tiles, 64x64 tiles, etc.
 class BMapPlayfield : public BPlayfield {
 public:
-  BMapPlayfield(TUint16 aTilesetSlot, TUint16 aMapSlot, TUint16 aCodesSlot);
+  BMapPlayfield(BViewPort *aViewPort, TUint16 aTilesetSlot, TUint16 aMapSlot, TUint16 aCodesSlot);
 
   virtual ~BMapPlayfield();
 
 public:
   // in pixels
-  TUint16 TileSize() { return 16; }
+  inline TUint16 TileSize() { return 16; }
   TUint16 MapWidth() { return mMapWidth * 16; }
   TUint16 MapHeight() { return mMapHeight * 16; }
   TUint16 MapMaxX() { return mMapWidth * 16 - SCREEN_WIDTH; }
@@ -25,14 +26,17 @@ public:
   TUint16 MapHeightTiles() { return mMapHeight; }
 
 public:
-  void Render(TFloat aWorldX, TFloat aWorldY);
+  // render section of map to viewport
+  void Render();
 
 protected:
+  BViewPort *mViewPort;
   TUint16 mTilesetSlot;
+  BMapTileset *mTileset;
   TUint16 mMapSlot;
   TUint16 mCodesSlot;
   TUint16 mMapWidth, mMapHeight;
-  TUint16 *mMapData;
+  TUint32 *mMapData;
   TUint16 *mAttributes;
 };
 

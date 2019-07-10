@@ -8,6 +8,10 @@
 #include "Memory.h"
 #include <memory>
 
+extern void ByteDump(TUint8 *ptr, TInt len, TInt width=8);
+extern void WordDump(TUint16 *ptr, TInt len, TInt width=8);
+extern void LongDump(TUint32 *ptr, TInt len, TInt width=8);
+
 /**
  * BBase is the base class for EVERYTHING.
  */

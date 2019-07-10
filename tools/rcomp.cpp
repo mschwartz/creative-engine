@@ -348,6 +348,7 @@ int main(int ac, char *av[]) {
             case '#':
             case '~':
             case ' ':
+            case '-':
               base[i] = '_';
               break;
             default:
@@ -386,6 +387,7 @@ int main(int ac, char *av[]) {
                   case '#':
                   case '~':
                   case ' ':
+                  case '-':
                       base[i] = '_';
                       break;
                   default:
