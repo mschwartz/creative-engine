@@ -53,7 +53,7 @@ void BMapPlayfield::Render() {
     const TInt offset = (row +offRow) * mMapWidth + offCol;
     TUint32 *map = &mMapData[offset];
     for (TInt col=0; col<tilesWide; col++) {
-      const TUint8 *tile = mTileset->TilePtr(TUint32(map[col] & 0xffff));
+      const TUint8 *tile = mTileset->TilePtr(TUint32(map[col]) & TUint32(0xffff));
       const TInt offset = (rect.y1 + row*16) * SCREEN_WIDTH + rect.x1 + col*16;
       TUint8 *bm = &gDisplay.renderBitmap->mPixels[offset];
       for (TInt y=0; y<16; y++) {
@@ -65,4 +65,13 @@ void BMapPlayfield::Render() {
       }
     }
   }
+}
+
+TUint32 BMapPlayfield::GetCell(TFloat aWorldX, TFloat aWorldY) {
+  TInt offRow = TInt(aWorldY / TileSize()),
+    offCol = TInt(aWorldX / TileSize());
+
+  TUint32 cell = mMapData[offRow * mMapWidth + offCol];
+  TUint32 attr = TUint32(mAttributes[cell&0xffff]);
+  return (cell & TUint32(0xffff)) | (attr << 16);
 }

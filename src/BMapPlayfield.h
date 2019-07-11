@@ -28,6 +28,8 @@ public:
 public:
   // render section of map to viewport
   void Render();
+  // cell is tile number | (attribute << 16)
+  TUint32 GetCell(TFloat aWorldX, TFloat aWorldY);
 
 protected:
   BViewPort *mViewPort;
