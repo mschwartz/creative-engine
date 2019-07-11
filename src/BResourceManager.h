@@ -21,6 +21,7 @@ class BBitmap;
 static const int MAX_RESOURCE = 1024;
 
 // Image type, passed as argument to LoadBitmap().
+
 static const TInt16 IMAGE_ENTIRE = 0; // image is the entire bitmap in width, height
 static const TInt16 IMAGE_8x8 = 1; // bitmap contains individual images, each 8x8, on a grid
 static const TInt16 IMAGE_16x16 = 2; // "" 16x16 on a grid
@@ -63,7 +64,6 @@ static const TInt16 IMAGE_256x64 = 34;
 
 static const TInt16 IMAGE_128x256 = 35;
 static const TInt16 IMAGE_256x128 = 36;
-
 struct BitmapSlot;
 struct RawSlot;
 

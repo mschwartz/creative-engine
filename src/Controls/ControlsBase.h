@@ -3,7 +3,6 @@
 
 #include "BTypes.h"
 
-
 const TUint16 BUTTON1 = TUint16(1<<0);
 const TUint16 BUTTON2 = TUint16(1<<1);
 const TUint16 BUTTON3 = TUint16(1<<2);
@@ -23,9 +22,6 @@ const TUint16 BUTTON_START = (BUTTON4);
 const TUint16 BUTTON_ANY = (BUTTON1|BUTTON2|BUTTON3|BUTTON4|BUTTONA|BUTTONB);
 const TUint16 JOY_ANY = (JOYUP|JOYDOWN|JOYLEFT|JOYRIGHT);
 const TUint16 BUTTON_JOY_ANY = (BUTTON_ANY|JOY_ANY);
-
-
-
 
 class ControlsBase {
 public:
